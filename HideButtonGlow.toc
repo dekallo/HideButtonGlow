@@ -1,0 +1,11 @@
+## Interface: 90002
+## Version: 1
+## Author: dekallo
+## Title: Hide Button Glow
+## Notes: Prevents spells on your action bar from glowing
+## OptionalDeps: LibButtonGlow-1.0
+## SavedVariables: HideButtonGlowDB
+
+libs\AceConfig-3.0\AceConfig-3.0.xml
+
+HideButtonGlow.lua
