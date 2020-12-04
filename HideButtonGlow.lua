@@ -53,10 +53,29 @@ function GetOptions()
                         set = function(info, value)
                             local spellId = tonumber(value)
                             if spellId ~= nil then
-                                -- TODO validate
-                                tinsert(HideButtonGlowDB.spells, spellId)
+								local name = GetSpellInfo(spellId)
+								if name then
+									if tContains(HideButtonGlowDB.spells, spellId) then
+										print(spellId.." already filtered as spell "..name..".")
+									else
+										print("Filtering button glow for spell "..name.." with ID "..spellId..".")
+										tinsert(HideButtonGlowDB.spells, spellId)
+									end
+								else
+									print("Invalid spell ID: "..value)
+								end
                             else
-                                -- TODO getspellinfo for text and validate
+								local name, _, _, _, _, _, spellId = GetSpellInfo(value)
+								if spellId then
+									if tContains(HideButtonGlowDB.spells, spellId) then
+										print("\""..value.."\" already filtered as spell "..name.." with ID "..spellId..".")
+									else
+										print("Filtering button glow for \""..value.."\" as spell "..name.." with ID "..spellId..".")
+										tinsert(HideButtonGlowDB.spells, spellId)
+									end
+								else
+									print("Invalid spell name: "..value)
+								end
                             end
                         end
                     },
@@ -67,12 +86,19 @@ function GetOptions()
                         name = "Delete",
                         desc = "Delete an existing filtered spell",
                         get = false,
-                        set = function(key, value)
-                            tremove(HideButtonGlowDB.spells, value)
+						set = function(info, index)
+							local spellId = HideButtonGlowDB.spells[index]
+							local name = GetSpellInfo(spellId)
+							print("Removing button glow filter for spell "..name.." with ID "..spellId..".")
+							tremove(HideButtonGlowDB.spells, index)
                         end,
-                        values = function()
-                            -- TODO convert to spell names
-                            return HideButtonGlowDB.spells
+						values = function()
+							local spellNames = {}
+							for _, spellId in ipairs(HideButtonGlowDB.spells) do
+								local name = GetSpellInfo(spellId)
+								tinsert(spellNames, name)
+							end
+                            return spellNames
                         end,
                         disabled = function()
                             return #HideButtonGlowDB.spells == 0
@@ -92,21 +118,21 @@ local showGlow = glowLib.ShowOverlayGlow
 function glowLib.ShowOverlayGlow(self)
     -- check if the 'hide all' option is set
     if HideButtonGlowDB.hideAll then
-        print("hiding all")
+        --print("hiding all")
         return
     end
 
     -- else iterate through filter list
     for _, spellToFilter in ipairs(HideButtonGlowDB.spells) do
-        print("checking filter value " .. spellToFilter)
+        --print("checking filter value " .. spellToFilter)
         if self:GetSpellId() == spellToFilter then
-            print("filter match")
+            --print("filter match")
             return
         end
-        print("filter didn't match spell id: " .. self:GetSpellId())
+        --print("filter didn't match spell id: " .. self:GetSpellId())
     end
 
     -- else show the glow
-    print("showing glow for spell id: " .. self:GetSpellId())
+    --print("showing glow for spell id: " .. self:GetSpellId())
     showGlow(self)
 end
