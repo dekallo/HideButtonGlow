@@ -8,4 +8,5 @@
 
 libs\AceConfig-3.0\AceConfig-3.0.xml
 
+options.lua
 HideButtonGlow.lua
