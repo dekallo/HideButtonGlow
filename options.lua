@@ -40,29 +40,29 @@ function GetOptions()
                         set = function(info, value)
                             local spellId = tonumber(value)
                             if spellId ~= nil then
-								local name = GetSpellInfo(spellId)
-								if name then
-									if tContains(HideButtonGlowDB.spells, spellId) then
-										print(spellId.." already filtered as spell "..name..".")
-									else
-										print("Filtering button glow for spell "..name.." with ID "..spellId..".")
-										tinsert(HideButtonGlowDB.spells, spellId)
-									end
-								else
-									print("Invalid spell ID: "..value)
-								end
+                                local name = GetSpellInfo(spellId)
+                                if name then
+                                    if tContains(HideButtonGlowDB.spells, spellId) then
+                                        print(spellId.." already filtered as spell "..name..".")
+                                    else
+                                        print("Filtering button glow for spell "..name.." with ID "..spellId..".")
+                                        tinsert(HideButtonGlowDB.spells, spellId)
+                                    end
+                                else
+                                    print("Invalid spell ID: "..value)
+                                end
                             else
-								local name, _, _, _, _, _, spellId = GetSpellInfo(value)
-								if spellId then
-									if tContains(HideButtonGlowDB.spells, spellId) then
-										print("\""..value.."\" already filtered as spell "..name.." with ID "..spellId..".")
-									else
-										print("Filtering button glow for \""..value.."\" as spell "..name.." with ID "..spellId..".")
-										tinsert(HideButtonGlowDB.spells, spellId)
-									end
-								else
-									print("Invalid spell name: "..value)
-								end
+                                local name, _, _, _, _, _, spellId = GetSpellInfo(value)
+                                if spellId then
+                                    if tContains(HideButtonGlowDB.spells, spellId) then
+                                        print("\""..value.."\" already filtered as spell "..name.." with ID "..spellId..".")
+                                    else
+                                        print("Filtering button glow for \""..value.."\" as spell "..name.." with ID "..spellId..".")
+                                        tinsert(HideButtonGlowDB.spells, spellId)
+                                    end
+                                else
+                                    print("Invalid spell name: "..value)
+                                end
                             end
                         end
                     },
@@ -73,18 +73,18 @@ function GetOptions()
                         name = "Delete",
                         desc = "Delete an existing filtered spell",
                         get = false,
-						set = function(info, index)
-							local spellId = HideButtonGlowDB.spells[index]
-							local name = GetSpellInfo(spellId)
-							print("Removing button glow filter for spell "..name.." with ID "..spellId..".")
-							tremove(HideButtonGlowDB.spells, index)
+                        set = function(info, index)
+                            local spellId = HideButtonGlowDB.spells[index]
+                            local name = GetSpellInfo(spellId)
+                            print("Removing button glow filter for spell "..name.." with ID "..spellId..".")
+                            tremove(HideButtonGlowDB.spells, index)
                         end,
-						values = function()
-							local spellNames = {}
-							for _, spellId in ipairs(HideButtonGlowDB.spells) do
-								local name = GetSpellInfo(spellId)
-								tinsert(spellNames, name)
-							end
+                        values = function()
+                            local spellNames = {}
+                            for _, spellId in ipairs(HideButtonGlowDB.spells) do
+                                local name = GetSpellInfo(spellId)
+                                tinsert(spellNames, name)
+                            end
                             return spellNames
                         end,
                         disabled = function()
