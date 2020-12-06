@@ -1,2 +1,5 @@
+v2: 2020-12-05
+    - Add interface options
+
 v1: 2020-11-30
     - Initial release
