@@ -1,4 +1,7 @@
-local addonName = "HideButtonGlow"
+local addonName, addon = ...
+
+-- globals
+local GetSpellInfo, tinsert, tremove, tContains, tonumber = GetSpellInfo, tinsert, tremove, tContains, tonumber
 
 function GetOptions()
     return {
@@ -11,7 +14,11 @@ function GetOptions()
                 type = "group",
                 name = "Options",
                 args = {
-                    spacer = {order = 1, type = "description", name = ""},
+                    spacer = {
+                        order = 1,
+                        type = "description",
+                        name = ""
+                    },
                     hideAll = {
                         order = 2,
                         type = "toggle",
@@ -21,17 +28,28 @@ function GetOptions()
                             return HideButtonGlowDB.hideAll
                         end,
                         set = function()
-                            local hide = not HideButtonGlowDB.hideAll
-                            HideButtonGlowDB.hideAll = hide
+                            HideButtonGlowDB.hideAll = not HideButtonGlowDB.hideAll
+                        end
+                    },
+                    debugMode = {
+                        order = 3,
+                        type = "toggle",
+                        name = "Debug mode",
+                        desc = "Prints all filtered/unfiltered spells to chat. Useful for finding spell IDs, or checking how your settings work.",
+                        get = function()
+                            return HideButtonGlowDB.debugMode
+                        end,
+                        set = function()
+                            HideButtonGlowDB.debugMode = not HideButtonGlowDB.debugMode
                         end
                     },
                     header = {
-                        order = 3,
+                        order = 4,
                         type = "header",
                         name = "Filtered Spells"
                     },
                     hiddenSpellAdd = {
-                        order = 4,
+                        order = 5,
                         type = "input",
                         width = "full",
                         name = "Add",
@@ -43,31 +61,31 @@ function GetOptions()
                                 local name = GetSpellInfo(spellId)
                                 if name then
                                     if tContains(HideButtonGlowDB.spells, spellId) then
-                                        print(spellId.." already filtered as spell "..name..".")
+                                        addon:addMessage("ID "..spellId.." already filtered as spell "..name..".")
                                     else
-                                        print("Filtering button glow for spell "..name.." with ID "..spellId..".")
+                                        addon:addMessage("Filtering button glow for spell "..name.." with ID "..spellId..".")
                                         tinsert(HideButtonGlowDB.spells, spellId)
                                     end
                                 else
-                                    print("Invalid spell ID: "..value)
+                                    addon:addMessage("Invalid spell ID: "..value)
                                 end
                             else
                                 local name, _, _, _, _, _, spellId = GetSpellInfo(value)
                                 if spellId then
                                     if tContains(HideButtonGlowDB.spells, spellId) then
-                                        print("\""..value.."\" already filtered as spell "..name.." with ID "..spellId..".")
+                                        addon:addMessage("\""..value.."\" already filtered as spell "..name.." with ID "..spellId..".")
                                     else
-                                        print("Filtering button glow for \""..value.."\" as spell "..name.." with ID "..spellId..".")
+                                        addon:addMessage("Filtering button glow for \""..value.."\" as spell "..name.." with ID "..spellId..".")
                                         tinsert(HideButtonGlowDB.spells, spellId)
                                     end
                                 else
-                                    print("Invalid spell name: "..value)
+                                    addon:addMessage("Invalid spell name: "..value)
                                 end
                             end
                         end
                     },
                     hiddenSpellDelete = {
-                        order = 5,
+                        order = 6,
                         type = "select",
                         width = "full",
                         name = "Delete",
@@ -76,7 +94,7 @@ function GetOptions()
                         set = function(info, index)
                             local spellId = HideButtonGlowDB.spells[index]
                             local name = GetSpellInfo(spellId)
-                            print("Removing button glow filter for spell "..name.." with ID "..spellId..".")
+                            addon:addMessage("Removing button glow filter for spell "..name.." with ID "..spellId..".")
                             tremove(HideButtonGlowDB.spells, index)
                         end,
                         values = function()
