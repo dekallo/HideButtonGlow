@@ -15,6 +15,10 @@ function addonFrame:PLAYER_LOGIN()
         HideButtonGlowDB.hideAll = false
         HideButtonGlowDB.debugMode = false
         HideButtonGlowDB.spells = {}
+        HideButtonGlowDB.allowedSpells = {}
+    elseif not HideButtonGlowDB.allowedSpells then
+        -- upgrade db for v3
+        HideButtonGlowDB.allowedSpells = {}
     end
 end
 
@@ -32,6 +36,12 @@ function glowLib.ShowOverlayGlow(self)
 
     -- check if the 'hide all' option is set
     if HideButtonGlowDB.hideAll then
+        for _, spellToAllow in ipairs(HideButtonGlowDB.allowedSpells) do
+            if spellId == spellToAllow then
+                addon:addMessage("Found in whitelist, allowing spell glow for "..spellName.." (ID "..spellId..").", true)
+                return showGlow(self)
+            end
+        end
         addon:addMessage("Hide All is checked, hiding spell glow for "..spellName.." (ID"..spellId..").", true)
         return
     end

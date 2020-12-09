@@ -1,3 +1,6 @@
+v3: 2020-12-08
+    - Add allowed spells to options
+
 v2: 2020-12-05
     - Add interface options
 
