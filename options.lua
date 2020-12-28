@@ -46,12 +46,18 @@ function GetOptions()
                     hiddenSpellHeader = {
                         order = 4,
                         type = "header",
-                        name = "Filtered Spells"
+                        name = "Filtered Spells",
+                        hidden = function()
+                            return HideButtonGlowDB.hideAll
+                        end
                     },
                     hiddenSpellDescription = {
                         order = 5,
                         type = "description",
-                        name = "These spell glows will always be filtered, regardless of other settings."
+                        name = "Input spell names or spell IDs to prevent button glow for those abilities.",
+                        hidden = function()
+                            return HideButtonGlowDB.hideAll
+                        end
                     },
                     hiddenSpellAdd = {
                         order = 6,
@@ -87,6 +93,9 @@ function GetOptions()
                                     addon:addMessage("Invalid spell name: "..value)
                                 end
                             end
+                        end,
+                        hidden = function()
+                            return HideButtonGlowDB.hideAll
                         end
                     },
                     hiddenSpellDelete = {
@@ -112,22 +121,26 @@ function GetOptions()
                         end,
                         disabled = function()
                             return #HideButtonGlowDB.spells == 0
+                        end,
+                        hidden = function()
+                            return HideButtonGlowDB.hideAll
                         end
-                    },
-                    spacer2 = {
-                        order = 8,
-                        type = "description",
-                        name = ""
                     },
                     allowedSpellHeader = {
                         order = 9,
                         type = "header",
-                        name = "Allowed Spells"
+                        name = "Allowed Spells",
+                        hidden = function()
+                            return not HideButtonGlowDB.hideAll
+                        end
                     },
                     allowedSpellDescription = {
                         order = 10,
                         type = "description",
-                        name = "Spells which will always be allowed to glow, bypassing the \"Hide All Glows\" setting."
+                        name = "Input spell names or spell IDs for buttons which will always be allowed to glow, bypassing the \"Hide all glows\" setting.",
+                        hidden = function()
+                            return not HideButtonGlowDB.hideAll
+                        end
                     },
                     allowedSpellAdd = {
                         order = 11,
@@ -163,6 +176,9 @@ function GetOptions()
                                     addon:addMessage("Invalid spell name: "..value)
                                 end
                             end
+                        end,
+                        hidden = function()
+                            return not HideButtonGlowDB.hideAll
                         end
                     },
                     allowedSpellDelete = {
@@ -188,6 +204,9 @@ function GetOptions()
                         end,
                         disabled = function()
                             return #HideButtonGlowDB.allowedSpells == 0
+                        end,
+                        hidden = function()
+                            return not HideButtonGlowDB.hideAll
                         end
                     }
                 }
