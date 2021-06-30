@@ -73,7 +73,7 @@ end
 
 -- hide default blizzard button glows
 local function PreventGlow(actionButton)
-    if (actionButton.action) then
+    if actionButton and actionButton.action then
         local spellType, id = GetActionInfo(actionButton.action)
 
         local spellId
