@@ -73,17 +73,19 @@ end
 
 -- hide default blizzard button glows
 local function PreventGlow(actionButton)
-    local spellType, id = GetActionInfo(actionButton.action)
+    if (actionButton.action) then
+        local spellType, id = GetActionInfo(actionButton.action)
 
-    local spellId
-    if spellType == "spell" then
-        spellId = id
-    elseif spellType == "macro" then
-        spellId = GetMacroSpell(id)
-    end
+        local spellId
+        if spellType == "spell" then
+            spellId = id
+        elseif spellType == "macro" then
+            spellId = GetMacroSpell(id)
+        end
 
-    if addon:shouldHideGlow(spellId) then
-        actionButton.overlay:Hide()
+        if addon:shouldHideGlow(spellId) then
+            actionButton.overlay:Hide()
+        end
     end
 end
 hooksecurefunc('ActionButton_ShowOverlayGlow', PreventGlow)
