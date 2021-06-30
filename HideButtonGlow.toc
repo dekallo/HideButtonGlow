@@ -1,5 +1,5 @@
 ## Interface: 90100
-## Version: 7
+## Version: 8
 ## Author: dekallo
 ## Title: Hide Button Glow
 ## Notes: Prevents spells on your action bar from glowing
