@@ -1,3 +1,6 @@
+v10: 2021-11-21
+    - Packaging updates
+
 v9: 2021-11-03
     - Support 9.1.5
 
