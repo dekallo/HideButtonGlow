@@ -1,3 +1,7 @@
+v14: 2022-10-05
+    - Prevent rare errors
+    - String formatting
+
 v13: 2022-08-21
     - Update for 9.2.7
 
