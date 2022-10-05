@@ -35,24 +35,24 @@ function addon:shouldHideGlow(spellId)
     if HideButtonGlowDB.hideAll then
         for _, spellToAllow in ipairs(HideButtonGlowDB.allowedSpells) do
             if spellId == spellToAllow then
-                addon:addMessage("Found in allow list, allowing spell glow for "..spellName.." (ID "..spellId..").", true)
+                addon:addMessage(("Found in allow list, allowing spell glow for %s (ID %d)."):format(name, spellId), true)
                 return false
             end
         end
-        addon:addMessage("Hide All is checked, hiding spell glow for "..spellName.." (ID"..spellId..").", true)
+        addon:addMessage(("Hide All is checked, hiding spell glow for %s (ID %d)."):format(name, spellId), true)
         return true
     end
 
     -- else iterate through filter list
     for _, spellToFilter in ipairs(HideButtonGlowDB.spells) do
         if spellId == spellToFilter then
-            addon:addMessage("Filter matched, hiding spell glow for "..spellName.." (ID "..spellId..").", true)
+            addon:addMessage(("Filter matched, hiding spell glow for %s (ID %d)."):format(name, spellId), true)
             return true
         end
     end
 
     -- else show the glow
-    addon:addMessage("No filters matched, allowing spell glow for "..spellName.." (ID "..spellId..").", true)
+    addon:addMessage(("No filters matched, allowing spell glow for %s (ID %d)."):format(name, spellId), true)
     return false
 end
 
