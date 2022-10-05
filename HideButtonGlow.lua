@@ -22,23 +22,23 @@ function addonFrame:PLAYER_LOGIN()
     end
 end
 
-function addon:addMessage(message)
+function addon:AddMessage(message)
     DEFAULT_CHAT_FRAME:AddMessage(message)
 end
 
-function addon:shouldHideGlow(spellId)
+function addon:ShouldHideGlow(spellId)
     -- check if the 'hide all' option is set
     if HideButtonGlowDB.hideAll then
         for _, spellToAllow in ipairs(HideButtonGlowDB.allowedSpells) do
             if spellId == spellToAllow then
                 if HideButtonGlowDB.debugMode then
-                    addon:addMessage(("Found in allow list, allowing spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+                    addon:AddMessage(("Found in allow list, allowing spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
                 end
                 return false
             end
         end
         if HideButtonGlowDB.debugMode then
-            addon:addMessage(("Hide All is checked, hiding spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+            addon:AddMessage(("Hide All is checked, hiding spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
         end
         return true
     end
@@ -47,7 +47,7 @@ function addon:shouldHideGlow(spellId)
     for _, spellToFilter in ipairs(HideButtonGlowDB.spells) do
         if spellId == spellToFilter then
             if HideButtonGlowDB.debugMode then
-                addon:addMessage(("Filter matched, hiding spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+                addon:AddMessage(("Filter matched, hiding spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
             end
             return true
         end
@@ -55,7 +55,7 @@ function addon:shouldHideGlow(spellId)
 
     -- else show the glow
     if HideButtonGlowDB.debugMode then
-        addon:addMessage(("No filters matched, allowing spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+        addon:AddMessage(("No filters matched, allowing spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
     end
     return false
 end
@@ -67,7 +67,7 @@ if glowLib and glowLib.ShowOverlayGlow then
     function glowLib.ShowOverlayGlow(self)
         local spellId = self:GetSpellId()
 
-        if spellId and addon:shouldHideGlow(spellId) then
+        if spellId and addon:ShouldHideGlow(spellId) then
             return
         end
 
@@ -87,7 +87,7 @@ local function PreventGlow(actionButton)
             spellId = GetMacroSpell(id)
         end
 
-        if spellId and addon:shouldHideGlow(spellId) then
+        if spellId and addon:ShouldHideGlow(spellId) then
             actionButton.overlay:Hide()
         end
     end
