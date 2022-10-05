@@ -35,7 +35,7 @@ function addon:shouldHideGlow(spellId)
     if HideButtonGlowDB.hideAll then
         for _, spellToAllow in ipairs(HideButtonGlowDB.allowedSpells) do
             if spellId == spellToAllow then
-                addon:addMessage("Found in whitelist, allowing spell glow for "..spellName.." (ID "..spellId..").", true)
+                addon:addMessage("Found in allow list, allowing spell glow for "..spellName.." (ID "..spellId..").", true)
                 return false
             end
         end
@@ -63,7 +63,7 @@ if glowLib and glowLib.ShowOverlayGlow then
     function glowLib.ShowOverlayGlow(self)
         local spellId = self:GetSpellId()
 
-        if addon:shouldHideGlow(spellId) then
+        if spellId and addon:shouldHideGlow(spellId) then
             return
         end
 
@@ -83,7 +83,7 @@ local function PreventGlow(actionButton)
             spellId = GetMacroSpell(id)
         end
 
-        if addon:shouldHideGlow(spellId) then
+        if spellId and addon:shouldHideGlow(spellId) then
             actionButton.overlay:Hide()
         end
     end
