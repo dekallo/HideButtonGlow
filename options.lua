@@ -215,5 +215,5 @@ function GetOptions()
     }
 end
 
-LibStub("AceConfig-3.0"):RegisterOptionsTable(addonName, GetOptions)
+LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, GetOptions)
 LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName, nil, nil, "general")
