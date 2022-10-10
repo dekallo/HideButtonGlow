@@ -9,6 +9,7 @@
 ## X-Wago-ID: RBKpVONE
 ## X-WoWI-ID: 26179
 
+libs\LibStub\LibStub.lua
 libs\AceConfig-3.0\AceConfig-3.0.xml
 
 HideButtonGlow.lua
