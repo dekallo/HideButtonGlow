@@ -1,3 +1,6 @@
+v15: 2022-10-10
+    - Packaging updates (fixes options for users without Ace3)
+
 v14: 2022-10-05
     - Prevent rare errors
     - String formatting
