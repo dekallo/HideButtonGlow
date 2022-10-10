@@ -10,6 +10,7 @@
 ## X-WoWI-ID: 26179
 
 libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
 libs\AceConfig-3.0\AceConfig-3.0.xml
 
 HideButtonGlow.lua
