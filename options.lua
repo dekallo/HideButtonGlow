@@ -3,7 +3,7 @@ local addonName, addon = ...
 -- globals
 local GetSpellInfo, tinsert, tremove, tContains, tonumber = GetSpellInfo, tinsert, tremove, tContains, tonumber
 
-function GetOptions()
+local function GetOptions()
     return {
         order = 1,
         type = "group",
