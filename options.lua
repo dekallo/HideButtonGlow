@@ -2,6 +2,7 @@ local addonName, addon = ...
 
 -- globals
 local GetSpellInfo, tinsert, tremove, tContains, tonumber = GetSpellInfo, tinsert, tremove, tContains, tonumber
+local HideButtonGlowDB = HideButtonGlowDB
 
 local function GetOptions()
     return {
