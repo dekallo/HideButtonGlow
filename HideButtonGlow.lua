@@ -2,7 +2,6 @@ local _, addon = ...
 
 -- globals
 local CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME = CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME
-local HideButtonGlowDB = HideButtonGlowDB
 
 local addonFrame = CreateFrame('Frame')
 addonFrame:SetScript('OnEvent', function(self, event, ...)
