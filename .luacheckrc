@@ -5,7 +5,7 @@ exclude_files = {
 }
 ignore = {
 	"212/self",
-    "421"
+    "421" -- shadowing
 }
 globals = {
     "CreateFrame",
