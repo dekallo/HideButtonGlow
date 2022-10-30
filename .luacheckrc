@@ -4,13 +4,15 @@ codes = true
 exclude_files = {
 }
 ignore = {
-	"212/self"
+	"212/self",
+    "421"
 }
 globals = {
     "CreateFrame",
     "GetSpellInfo",
     "GetActionInfo",
     "GetMacroSpell",
+    "hooksecurefunc",
     "tinsert",
     "tremove",
     "tContains",
