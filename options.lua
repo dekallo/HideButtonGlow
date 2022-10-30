@@ -2,6 +2,7 @@ local addonName, addon = ...
 
 -- globals
 local GetSpellInfo, tinsert, tremove, tContains, tonumber = GetSpellInfo, tinsert, tremove, tContains, tonumber
+local HideButtonGlowDB = HideButtonGlowDB
 
 local function GetOptions()
     return {
@@ -66,7 +67,7 @@ local function GetOptions()
                         name = "Add",
                         desc = "Type a spell name or spell ID to prevent it from glowing.",
                         get = function() return "" end,
-                        set = function(info, value)
+                        set = function(_, value)
                             local spellId = tonumber(value)
                             if spellId ~= nil then
                                 local name = GetSpellInfo(spellId)
@@ -105,7 +106,7 @@ local function GetOptions()
                         name = "Delete",
                         desc = "Delete an existing filtered spell.",
                         get = false,
-                        set = function(info, index)
+                        set = function(_, index)
                             local spellId = HideButtonGlowDB.spells[index]
                             local name = GetSpellInfo(spellId)
                             addon:AddMessage(("Removing button glow filter for spell %s with ID %d."):format(name, spellId))
@@ -149,7 +150,7 @@ local function GetOptions()
                         name = "Add",
                         desc = "Type a spell name or spell ID to always allow it to glow.",
                         get = function() return "" end,
-                        set = function(info, value)
+                        set = function(_, value)
                             local spellId = tonumber(value)
                             if spellId ~= nil then
                                 local name = GetSpellInfo(spellId)
@@ -188,7 +189,7 @@ local function GetOptions()
                         name = "Delete",
                         desc = "Delete an existing allowed spell.",
                         get = false,
-                        set = function(info, index)
+                        set = function(_, index)
                             local spellId = HideButtonGlowDB.allowedSpells[index]
                             local name = GetSpellInfo(spellId)
                             addon:AddMessage(("Removing allowed button glow for spell %s with ID %d."):format(name, spellId))
