@@ -60,7 +60,7 @@ function addon:ShouldHideGlow(spellId)
     return false
 end
 
--- hide LibButtonGlow based glows
+-- prevent LibButtonGlow based glows from ever showing
 local glowLib = LibStub("LibButtonGlow-1.0", true)
 if glowLib and glowLib.ShowOverlayGlow then
     local showGlow = glowLib.ShowOverlayGlow
@@ -88,7 +88,14 @@ local function PreventGlow(actionButton)
         end
 
         if spellId and addon:ShouldHideGlow(spellId) then
-            actionButton.overlay:Hide()
+            if actionButton.overlay then
+                -- classic, pre 10.0.2
+                actionButton.overlay:Hide()
+            end
+            if actionButton.SpellActivationAlert then
+                -- dragonflight, post 10.0.2
+                actionButton.SpellActivationAlert:Hide()
+            end
         end
     end
 end
