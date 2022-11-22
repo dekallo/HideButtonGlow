@@ -19,5 +19,8 @@ globals = {
     "tonumber",
     "LibStub",
     "HideButtonGlowDB",
-    "DEFAULT_CHAT_FRAME"
+    "DEFAULT_CHAT_FRAME",
+    "InterfaceOptionsFrame_OpenToCategory",
+    "SlashCmdList",
+    "SLASH_HideButtonGlow1"
 }
