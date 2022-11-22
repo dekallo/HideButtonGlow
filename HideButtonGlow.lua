@@ -1,13 +1,14 @@
-local _, addon = ...
+local addonName, addon = ...
 
 -- globals
 local CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME = CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME
 
 local addonFrame = CreateFrame('Frame')
 addonFrame:SetScript('OnEvent', function(self, event, ...)
-    if self[event] then return self[event](...) end
+    if self[event] then return self[event](self, ...) end
 end)
 addonFrame:RegisterEvent('PLAYER_LOGIN')
+addonFrame:RegisterEvent("ADDON_LOADED")
 
 function addonFrame:PLAYER_LOGIN()
     if not HideButtonGlowDB then
@@ -20,6 +21,19 @@ function addonFrame:PLAYER_LOGIN()
         -- upgrade db for v3
         HideButtonGlowDB.allowedSpells = {}
     end
+end
+
+function addonFrame:ADDON_LOADED(loadedAddon)
+    if loadedAddon ~= addonName then
+        return
+    end
+    self:UnregisterEvent("ADDON_LOADED")
+
+    SlashCmdList.HideButtonGlow = function()
+        InterfaceOptionsFrame_OpenToCategory(addonName)
+        InterfaceOptionsFrame_OpenToCategory(addonName)
+    end
+    SLASH_HideButtonGlow1 = "/hbg"
 end
 
 function addon:AddMessage(message)
