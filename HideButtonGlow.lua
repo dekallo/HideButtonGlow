@@ -1,7 +1,7 @@
 local addonName, addon = ...
 
 -- globals
-local CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME = CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME
+local CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory = CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory
 
 local addonFrame = CreateFrame('Frame')
 addonFrame:SetScript('OnEvent', function(self, event, ...)
