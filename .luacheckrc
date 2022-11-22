@@ -22,5 +22,6 @@ globals = {
     "DEFAULT_CHAT_FRAME",
     "InterfaceOptionsFrame_OpenToCategory",
     "SlashCmdList",
-    "SLASH_HideButtonGlow1"
+    "SLASH_HideButtonGlow1",
+    "SLASH_HideButtonGlow2"
 }

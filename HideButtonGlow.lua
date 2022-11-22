@@ -3,14 +3,14 @@ local addonName, addon = ...
 -- globals
 local CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory = CreateFrame, GetSpellInfo, GetActionInfo, GetMacroSpell, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory
 
-local addonFrame = CreateFrame('Frame')
-addonFrame:SetScript('OnEvent', function(self, event, ...)
+local eventFrame = CreateFrame('Frame')
+eventFrame:SetScript('OnEvent', function(self, event, ...)
     if self[event] then return self[event](self, ...) end
 end)
-addonFrame:RegisterEvent('PLAYER_LOGIN')
-addonFrame:RegisterEvent("ADDON_LOADED")
+eventFrame:RegisterEvent('PLAYER_LOGIN')
+eventFrame:RegisterEvent("ADDON_LOADED")
 
-function addonFrame:PLAYER_LOGIN()
+function eventFrame:PLAYER_LOGIN()
     if not HideButtonGlowDB then
         HideButtonGlowDB = {}
         HideButtonGlowDB.hideAll = false
@@ -23,17 +23,19 @@ function addonFrame:PLAYER_LOGIN()
     end
 end
 
-function addonFrame:ADDON_LOADED(loadedAddon)
+function eventFrame:ADDON_LOADED(loadedAddon)
     if loadedAddon ~= addonName then
         return
     end
     self:UnregisterEvent("ADDON_LOADED")
 
     SlashCmdList.HideButtonGlow = function()
+        -- call this twice to ensure it opens to the right category
         InterfaceOptionsFrame_OpenToCategory(addonName)
         InterfaceOptionsFrame_OpenToCategory(addonName)
     end
     SLASH_HideButtonGlow1 = "/hbg"
+    SLASH_HideButtonGlow2 = "/hidebuttonglow"
 end
 
 function addon:AddMessage(message)
@@ -77,7 +79,7 @@ end
 -- prevent LibButtonGlow based glows from ever showing
 local glowLib = LibStub("LibButtonGlow-1.0", true)
 if glowLib and glowLib.ShowOverlayGlow then
-    local showGlow = glowLib.ShowOverlayGlow
+    local OriginalShowOverlayGlow = glowLib.ShowOverlayGlow
     function glowLib.ShowOverlayGlow(self)
         local spellId = self:GetSpellId()
 
@@ -85,7 +87,7 @@ if glowLib and glowLib.ShowOverlayGlow then
             return
         end
 
-        return showGlow(self)
+        return OriginalShowOverlayGlow(self)
     end
 end
 
