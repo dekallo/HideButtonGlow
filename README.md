@@ -2,7 +2,7 @@
 
 A WoW Addon.
 
-Prevents addons (Bartender, etc) from making your action buttons glow. Can disable button glow for certain spells or just prevent all button glow.
+Prevents your action buttons from glowing (compatible with Blizzard bars, ElvUI, Dominos, Bartender, or anything that uses LibButtonGlow). Can disable button glow for certain spells or just prevent all button glow.
 
 Open options with /hbg or /hidebuttonglow.
 
