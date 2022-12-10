@@ -77,10 +77,10 @@ function addon:ShouldHideGlow(spellId)
 end
 
 -- prevent LibButtonGlow based glows from ever showing
-local glowLib = LibStub("LibButtonGlow-1.0", true)
-if glowLib and glowLib.ShowOverlayGlow then
-    local OriginalShowOverlayGlow = glowLib.ShowOverlayGlow
-    function glowLib.ShowOverlayGlow(self)
+local LibButtonGlow = LibStub("LibButtonGlow-1.0", true)
+if LibButtonGlow and LibButtonGlow.ShowOverlayGlow then
+    local OriginalShowOverlayGlow = LibButtonGlow.ShowOverlayGlow
+    function LibButtonGlow.ShowOverlayGlow(self)
         local spellId = self:GetSpellId()
 
         if spellId and addon:ShouldHideGlow(spellId) then
@@ -88,6 +88,25 @@ if glowLib and glowLib.ShowOverlayGlow then
         end
 
         return OriginalShowOverlayGlow(self)
+    end
+end
+
+-- prevent ElvUI bar glows from ever showing
+-- ElvUI adds a ShowOverlayGlow function to LibCustomGlow
+if ElvUI then
+    local E = unpack(ElvUI)
+    local LibCustomGlow = E and E.Libs and E.Libs.CustomGlow
+    if LibCustomGlow and LibCustomGlow.ShowOverlayGlow then
+        local OriginalShowOverlayGlow = LibCustomGlow.ShowOverlayGlow
+        function LibCustomGlow.ShowOverlayGlow(self)
+            local spellId = self:GetSpellId()
+
+            if spellId and addon:ShouldHideGlow(spellId) then
+                return
+            end
+
+            return OriginalShowOverlayGlow(self)
+        end
     end
 end
 
