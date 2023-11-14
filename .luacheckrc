@@ -11,7 +11,6 @@ globals = {
     "CreateFrame",
     "GetSpellInfo",
     "GetActionInfo",
-    "GetMacroSpell",
     "hooksecurefunc",
     "tinsert",
     "tremove",
