@@ -114,22 +114,14 @@ end
 local function PreventGlow(actionButton)
     if actionButton and actionButton.action then
         local spellType, id = GetActionInfo(actionButton.action)
-
-        local spellId
-        if spellType == "spell" then
-            spellId = id
-        elseif spellType == "macro" then
-            spellId = GetMacroSpell(id)
-        end
-
-        if spellId and addon:ShouldHideGlow(spellId) then
-            if actionButton.overlay then
-                -- classic, pre 10.0.2
-                actionButton.overlay:Hide()
-            end
+        -- only check spell and macro glows
+        if id and (spellType == "spell" or spellType == "macro") and addon:ShouldHideGlow(id) then
             if actionButton.SpellActivationAlert then
                 -- dragonflight, post 10.0.2
                 actionButton.SpellActivationAlert:Hide()
+            elseif actionButton.overlay then
+                -- classic, pre 10.0.2
+                actionButton.overlay:Hide()
             end
         end
     end
