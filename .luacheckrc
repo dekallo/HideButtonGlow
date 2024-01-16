@@ -23,5 +23,6 @@ globals = {
     "SlashCmdList",
     "SLASH_HideButtonGlow1",
     "SLASH_HideButtonGlow2",
+    "Dominos",
     "ElvUI"
 }

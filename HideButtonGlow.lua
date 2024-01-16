@@ -74,24 +74,28 @@ function addon:ShouldHideGlow(spellId)
 	return false
 end
 
--- prevent LibButtonGlow based glows from ever showing
-local LibButtonGlow = LibStub("LibButtonGlow-1.0", true)
-if LibButtonGlow and LibButtonGlow.ShowOverlayGlow then
-	local OriginalShowOverlayGlow = LibButtonGlow.ShowOverlayGlow
-	function LibButtonGlow.ShowOverlayGlow(self)
-		local spellId = self:GetSpellId()
-		if spellId and addon:ShouldHideGlow(spellId) then
-			return
+-- LibButtonGlow
+
+do
+	local LibButtonGlow = LibStub("LibButtonGlow-1.0", true)
+	if LibButtonGlow and LibButtonGlow.ShowOverlayGlow then
+		local OriginalShowOverlayGlow = LibButtonGlow.ShowOverlayGlow
+		function LibButtonGlow.ShowOverlayGlow(self)
+			local spellId = self:GetSpellId()
+			if spellId and addon:ShouldHideGlow(spellId) then
+				return
+			end
+			return OriginalShowOverlayGlow(self)
 		end
-		return OriginalShowOverlayGlow(self)
 	end
 end
 
--- prevent ElvUI bar glows from ever showing
--- ElvUI adds a ShowOverlayGlow function to LibCustomGlow
+-- ElvUI
+
 if ElvUI then
 	local E = unpack(ElvUI)
 	local LibCustomGlow = E and E.Libs and E.Libs.CustomGlow
+	-- ElvUI adds a ShowOverlayGlow function to LibCustomGlow where there was not one before
 	if LibCustomGlow and LibCustomGlow.ShowOverlayGlow then
 		local OriginalShowOverlayGlow = LibCustomGlow.ShowOverlayGlow
 		function LibCustomGlow.ShowOverlayGlow(self)
@@ -104,7 +108,26 @@ if ElvUI then
 	end
 end
 
--- hide default blizzard button glows
+-- Dominos
+
+if Dominos then
+	-- since version 10.2.5-beta1, Dominos defines their own ActionButton instead of reusing the buttons
+	-- from the default Blizzard bars.
+	local ActionButton = Dominos.ActionButton
+	if ActionButton and ActionButton.ShowOverlayGlow then
+		local OriginalShowOverlayGlow = ActionButton.ShowOverlayGlow
+		function ActionButton.ShowOverlayGlow(self)
+			local spellType, id = GetActionInfo(self.action)
+			-- only check spell and macro glows
+			if not id or not (spellType == "spell" or spellType == "macro") or not addon:ShouldHideGlow(id) then
+				return OriginalShowOverlayGlow(self)
+			end
+		end
+	end
+end
+
+-- Blizzard Bars
+
 local function PreventGlow(actionButton)
 	if actionButton and actionButton.action then
 		local spellType, id = GetActionInfo(actionButton.action)
