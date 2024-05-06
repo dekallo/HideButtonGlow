@@ -1,5 +1,5 @@
 ## Interface: 40400
-## Version: v30
+## Version: @project-version@
 ## Author: dekallo
 ## Title: Hide Button Glow
 ## Notes: Prevents spells on your action bar from glowing
