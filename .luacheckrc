@@ -9,6 +9,7 @@ ignore = {
 }
 globals = {
     "CreateFrame",
+    "C_Spell",
     "GetSpellInfo",
     "GetActionInfo",
     "hooksecurefunc",

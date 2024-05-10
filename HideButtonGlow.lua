@@ -1,7 +1,10 @@
 local addonName, addon = ...
 
 -- globals
-local CreateFrame, GetSpellInfo, GetActionInfo, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory = CreateFrame, GetSpellInfo, GetActionInfo, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory
+local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory
+
+-- TWW uses C_Spell, compatibility code for older clients
+local GetSpellName = C_Spell and C_Spell.GetSpellName or GetSpellInfo
 
 local eventFrame = CreateFrame('Frame')
 eventFrame:SetScript('OnEvent', function(self, event, ...)
@@ -48,13 +51,13 @@ function addon:ShouldHideGlow(spellId)
 		for _, spellToAllow in ipairs(HideButtonGlowDB.allowedSpells) do
 			if spellId == spellToAllow then
 				if HideButtonGlowDB.debugMode then
-					addon:AddMessage(("Found in allow list, allowing spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+					addon:AddMessage(("Found in allow list, allowing spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
 				end
 				return false
 			end
 		end
 		if HideButtonGlowDB.debugMode then
-			addon:AddMessage(("Hide All is checked, hiding spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+			addon:AddMessage(("Hide All is checked, hiding spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
 		end
 		return true
 	end
@@ -62,14 +65,14 @@ function addon:ShouldHideGlow(spellId)
 	for _, spellToFilter in ipairs(HideButtonGlowDB.spells) do
 		if spellId == spellToFilter then
 			if HideButtonGlowDB.debugMode then
-				addon:AddMessage(("Filter matched, hiding spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+				addon:AddMessage(("Filter matched, hiding spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
 			end
 			return true
 		end
 	end
 	-- else show the glow
 	if HideButtonGlowDB.debugMode then
-		addon:AddMessage(("No filters matched, allowing spell glow for %s (ID %d)."):format(GetSpellInfo(spellId), spellId))
+		addon:AddMessage(("No filters matched, allowing spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
 	end
 	return false
 end

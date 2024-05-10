@@ -1,7 +1,17 @@
 local addonName, addon = ...
 
 -- globals
-local GetSpellInfo, tinsert, tremove, tContains, tonumber = GetSpellInfo, tinsert, tremove, tContains, tonumber
+local tinsert, tremove, tContains, tonumber = tinsert, tremove, tContains, tonumber
+
+-- TWW uses C_Spell, compatibility code for older clients
+local GetSpellName = C_Spell and C_Spell.GetSpellName or GetSpellInfo
+local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or function(spellIdentifier)
+    local name, _, _, _, _, _, spellID = GetSpellInfo(spellIdentifier)
+    return {
+        ["name"] = name,
+        ["spellID"] = spellID,
+    }
+end
 
 local function GetOptions()
     return {
@@ -67,27 +77,27 @@ local function GetOptions()
                         desc = "Type a spell name or spell ID to prevent it from glowing.",
                         get = function() return "" end,
                         set = function(_, value)
-                            local spellId = tonumber(value)
-                            if spellId ~= nil then
-                                local name = GetSpellInfo(spellId)
+                            local spellID = tonumber(value)
+                            if spellID ~= nil then
+                                local name = GetSpellName(spellID)
                                 if name then
-                                    if tContains(HideButtonGlowDB.spells, spellId) then
-                                        addon:AddMessage(("ID %2$d already filtered as spell %1$s."):format(name, spellId))
+                                    if tContains(HideButtonGlowDB.spells, spellID) then
+                                        addon:AddMessage(("ID %2$d already filtered as spell %1$s."):format(name, spellID))
                                     else
-                                        addon:AddMessage(("Filtering button glow for spell %s with ID %d."):format(name, spellId))
-                                        tinsert(HideButtonGlowDB.spells, spellId)
+                                        addon:AddMessage(("Filtering button glow for spell %s with ID %d."):format(name, spellID))
+                                        tinsert(HideButtonGlowDB.spells, spellID)
                                     end
                                 else
                                     addon:AddMessage(("Invalid spell ID: %s"):format(value))
                                 end
                             else
-                                local name, _, _, _, _, _, spellId = GetSpellInfo(value)
-                                if spellId then
-                                    if tContains(HideButtonGlowDB.spells, spellId) then
-                                        addon:AddMessage(("\"%3$s\" already filtered as spell %1$s with ID %2$d."):format(name, spellId, value))
+                                local spellInfo = GetSpellInfo(value)
+                                if spellInfo and spellInfo.spellID then
+                                    if tContains(HideButtonGlowDB.spells, spellInfo.spellID) then
+                                        addon:AddMessage(("\"%3$s\" already filtered as spell %1$s with ID %2$d."):format(spellInfo.name, spellInfo.spellID, value))
                                     else
-                                        addon:AddMessage(("Filtering button glow for \"%3$s\" as spell %1$s with ID %2$d."):format(name, spellId, value))
-                                        tinsert(HideButtonGlowDB.spells, spellId)
+                                        addon:AddMessage(("Filtering button glow for \"%3$s\" as spell %1$s with ID %2$d."):format(spellInfo.name, spellInfo.spellID, value))
+                                        tinsert(HideButtonGlowDB.spells, spellInfo.spellID)
                                     end
                                 else
                                     addon:AddMessage(("Invalid spell name: %s"):format(value))
@@ -106,15 +116,15 @@ local function GetOptions()
                         desc = "Delete an existing filtered spell.",
                         get = false,
                         set = function(_, index)
-                            local spellId = HideButtonGlowDB.spells[index]
-                            local name = GetSpellInfo(spellId)
-                            addon:AddMessage(("Removing button glow filter for spell %s with ID %d."):format(name, spellId))
+                            local spellID = HideButtonGlowDB.spells[index]
+                            local name = GetSpellName(spellID)
+                            addon:AddMessage(("Removing button glow filter for spell %s with ID %d."):format(name, spellID))
                             tremove(HideButtonGlowDB.spells, index)
                         end,
                         values = function()
                             local spellNames = {}
-                            for _, spellId in ipairs(HideButtonGlowDB.spells) do
-                                local name = GetSpellInfo(spellId)
+                            for _, spellID in ipairs(HideButtonGlowDB.spells) do
+                                local name = GetSpellName(spellID)
                                 tinsert(spellNames, name)
                             end
                             return spellNames
@@ -150,27 +160,27 @@ local function GetOptions()
                         desc = "Type a spell name or spell ID to always allow it to glow.",
                         get = function() return "" end,
                         set = function(_, value)
-                            local spellId = tonumber(value)
-                            if spellId ~= nil then
-                                local name = GetSpellInfo(spellId)
+                            local spellID = tonumber(value)
+                            if spellID ~= nil then
+                                local name = GetSpellName(spellID)
                                 if name then
-                                    if tContains(HideButtonGlowDB.allowedSpells, spellId) then
-                                        addon:AddMessage(("ID %2$d already allowed as spell %1$s."):format(name, spellId))
+                                    if tContains(HideButtonGlowDB.allowedSpells, spellID) then
+                                        addon:AddMessage(("ID %2$d already allowed as spell %1$s."):format(name, spellID))
                                     else
-                                        addon:AddMessage(("Allowing button glow for spell %s with ID %d."):format(name, spellId))
-                                        tinsert(HideButtonGlowDB.allowedSpells, spellId)
+                                        addon:AddMessage(("Allowing button glow for spell %s with ID %d."):format(name, spellID))
+                                        tinsert(HideButtonGlowDB.allowedSpells, spellID)
                                     end
                                 else
                                     addon:AddMessage(("Invalid spell ID: %s"):format(value))
                                 end
                             else
-                                local name, _, _, _, _, _, spellId = GetSpellInfo(value)
-                                if spellId then
-                                    if tContains(HideButtonGlowDB.allowedSpells, spellId) then
-                                        addon:AddMessage(("\"%3$s\" already allowed as spell %s with ID %d."):format(name, spellId, value))
+                                local spellInfo = GetSpellInfo(value)
+                                if spellInfo and spellInfo.spellID then
+                                    if tContains(HideButtonGlowDB.allowedSpells, spellInfo.spellID) then
+                                        addon:AddMessage(("\"%3$s\" already allowed as spell %s with ID %d."):format(spellInfo.name, spellInfo.spellID, value))
                                     else
-                                        addon:AddMessage(("Allowing button glow for \"%3$s\" as spell %1$s with ID %2$d."):format(name, spellId, value))
-                                        tinsert(HideButtonGlowDB.allowedSpells, spellId)
+                                        addon:AddMessage(("Allowing button glow for \"%3$s\" as spell %1$s with ID %2$d."):format(spellInfo.name, spellInfo.spellID, value))
+                                        tinsert(HideButtonGlowDB.allowedSpells, spellInfo.spellID)
                                     end
                                 else
                                     addon:AddMessage(("Invalid spell name: %s"):format(value))
@@ -189,15 +199,15 @@ local function GetOptions()
                         desc = "Delete an existing allowed spell.",
                         get = false,
                         set = function(_, index)
-                            local spellId = HideButtonGlowDB.allowedSpells[index]
-                            local name = GetSpellInfo(spellId)
-                            addon:AddMessage(("Removing allowed button glow for spell %s with ID %d."):format(name, spellId))
+                            local spellID = HideButtonGlowDB.allowedSpells[index]
+                            local name = GetSpellName(spellID)
+                            addon:AddMessage(("Removing allowed button glow for spell %s with ID %d."):format(name, spellID))
                             tremove(HideButtonGlowDB.allowedSpells, index)
                         end,
                         values = function()
                             local spellNames = {}
-                            for _, spellId in ipairs(HideButtonGlowDB.allowedSpells) do
-                                local name = GetSpellInfo(spellId)
+                            for _, spellID in ipairs(HideButtonGlowDB.allowedSpells) do
+                                local name = GetSpellName(spellID)
                                 tinsert(spellNames, name)
                             end
                             return spellNames
