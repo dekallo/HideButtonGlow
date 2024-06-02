@@ -1,7 +1,7 @@
 local addonName, addon = ...
 
 -- globals
-local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, InterfaceOptionsFrame_OpenToCategory
+local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings
 
 -- TWW uses C_Spell, compatibility code for older clients
 local GetSpellName = C_Spell and C_Spell.GetSpellName or GetSpellInfo
@@ -31,11 +31,8 @@ function eventFrame:ADDON_LOADED(loadedAddon)
 		return
 	end
 	self:UnregisterEvent("ADDON_LOADED")
-
 	SlashCmdList.HideButtonGlow = function()
-		-- call this twice to ensure it opens to the right category
-		InterfaceOptionsFrame_OpenToCategory(addonName)
-		InterfaceOptionsFrame_OpenToCategory(addonName)
+		Settings.OpenToCategory(addonName)
 	end
 	SLASH_HideButtonGlow1 = "/hbg"
 	SLASH_HideButtonGlow2 = "/hidebuttonglow"

@@ -20,7 +20,7 @@ globals = {
     "LibStub",
     "HideButtonGlowDB",
     "DEFAULT_CHAT_FRAME",
-    "InterfaceOptionsFrame_OpenToCategory",
+    "Settings",
     "SlashCmdList",
     "SLASH_HideButtonGlow1",
     "SLASH_HideButtonGlow2",
