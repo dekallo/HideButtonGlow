@@ -99,9 +99,11 @@ if ElvUI then
 	if LibCustomGlow and LibCustomGlow.ShowOverlayGlow then
 		local OriginalShowOverlayGlow = LibCustomGlow.ShowOverlayGlow
 		function LibCustomGlow.ShowOverlayGlow(self)
-			local spellId = self:GetSpellId()
-			if spellId and addon:ShouldHideGlow(spellId) then
-				return
+			if self:GetSpellId() then
+				local spellId = self:GetSpellId()
+				if spellId and addon:ShouldHideGlow(spellId) then
+					return
+				end
 			end
 			return OriginalShowOverlayGlow(self)
 		end
