@@ -13,7 +13,7 @@ local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or function(spellIdentifie
     }
 end
 
-local function GetOptions()
+LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, function()
     return {
         order = 1,
         type = "group",
@@ -123,8 +123,8 @@ local function GetOptions()
                         end,
                         values = function()
                             local spellNames = {}
-                            for _, spellID in ipairs(HideButtonGlowDB.spells) do
-                                local name = GetSpellName(spellID)
+                            for i = 1, #HideButtonGlowDB.spells do
+                                local name = GetSpellName(HideButtonGlowDB.spells[i])
                                 tinsert(spellNames, name)
                             end
                             return spellNames
@@ -206,8 +206,8 @@ local function GetOptions()
                         end,
                         values = function()
                             local spellNames = {}
-                            for _, spellID in ipairs(HideButtonGlowDB.allowedSpells) do
-                                local name = GetSpellName(spellID)
+                            for i = 1, #HideButtonGlowDB.allowedSpells do
+                                local name = GetSpellName(HideButtonGlowDB.allowedSpells[i])
                                 tinsert(spellNames, name)
                             end
                             return spellNames
@@ -223,7 +223,5 @@ local function GetOptions()
             }
         }
     }
-end
-
-LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, GetOptions)
+end)
 LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName, nil, nil, "general")
