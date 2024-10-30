@@ -1,4 +1,4 @@
-## Interface: 40400, 110005
+## Interface: 40401, 110005
 ## Version: @project-version@
 ## Author: dekallo
 ## Title: Hide Button Glow
