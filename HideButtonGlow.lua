@@ -3,8 +3,7 @@ local addonName, addon = ...
 -- globals
 local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings
 
--- TWW uses C_Spell, compatibility code for older clients
-local GetSpellName = C_Spell and C_Spell.GetSpellName or GetSpellInfo
+local GetSpellName = C_Spell.GetSpellName
 
 local eventFrame = CreateFrame("Frame")
 eventFrame:SetScript("OnEvent", function(self, event, ...)

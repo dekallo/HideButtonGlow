@@ -3,15 +3,7 @@ local addonName, addon = ...
 -- globals
 local tinsert, tremove, tContains, tonumber = tinsert, tremove, tContains, tonumber
 
--- TWW uses C_Spell, compatibility code for older clients
-local GetSpellName = C_Spell and C_Spell.GetSpellName or GetSpellInfo
-local GetSpellInfo = C_Spell and C_Spell.GetSpellInfo or function(spellIdentifier)
-    local name, _, _, _, _, _, spellID = GetSpellInfo(spellIdentifier)
-    return {
-        ["name"] = name,
-        ["spellID"] = spellID,
-    }
-end
+local GetSpellName, GetSpellInfo = C_Spell.GetSpellName, C_Spell.GetSpellInfo
 
 LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, function()
     return {
