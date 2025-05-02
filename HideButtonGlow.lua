@@ -146,7 +146,7 @@ if ActionButtonSpellAlertManager and C_ActionBar.IsAssistedCombatAction then -- 
 			end
 		end
 	end)
-else -- Classic, Retail (pre 11.1.5)
+else -- Classic, Retail (pre 11.1.7)
 	hooksecurefunc("ActionButton_ShowOverlayGlow", function(actionButton)
 		if actionButton and actionButton.action then
 			local spellType, id = GetActionInfo(actionButton.action)
