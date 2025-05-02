@@ -126,18 +126,40 @@ end
 
 -- Blizzard Bars
 
-hooksecurefunc("ActionButton_ShowOverlayGlow", function(actionButton)
-	if actionButton and actionButton.action then
-		local spellType, id = GetActionInfo(actionButton.action)
-		-- only check spell and macro glows
-		if id and (spellType == "spell" or spellType == "macro") and addon:ShouldHideGlow(id) then
-			if actionButton.SpellActivationAlert then
-				-- Retail, post 10.0.2
-				actionButton.SpellActivationAlert:Hide()
-			elseif actionButton.overlay then
-				-- Cata Classic, pre 10.0.2
-				actionButton.overlay:Hide()
+if ActionButtonSpellAlertManager then
+	local IsAssistedCombatAction = C_ActionBar.IsAssistedCombatAction
+	hooksecurefunc(ActionButtonSpellAlertManager, "ShowAlert", function(actionButton)
+		if actionButton and actionButton.activeAlerts then
+			for activeAlert in pairs(actionButton.activeAlerts) do
+				local action = activeAlert.action
+				if IsAssistedCombatAction(action) then
+					-- don't hide glows from the combat assist feature
+					return
+				end
+				local spellType, id = GetActionInfo(action)
+				-- only check spell and macro glows
+				if id and (spellType == "spell" or spellType == "macro") and addon:ShouldHideGlow(id) then
+					if activeAlert.SpellActivationAlert then
+						activeAlert.SpellActivationAlert:Hide()
+					end
+				end
 			end
 		end
-	end
-end)
+	end)
+else
+	hooksecurefunc("ActionButton_ShowOverlayGlow", function(actionButton)
+		if actionButton and actionButton.action then
+			local spellType, id = GetActionInfo(actionButton.action)
+			-- only check spell and macro glows
+			if id and (spellType == "spell" or spellType == "macro") and addon:ShouldHideGlow(id) then
+				if actionButton.SpellActivationAlert then
+					-- Retail, post 10.0.2
+					actionButton.SpellActivationAlert:Hide()
+				elseif actionButton.overlay then
+					-- Cata Classic, pre 10.0.2
+					actionButton.overlay:Hide()
+				end
+			end
+		end
+	end)
+end

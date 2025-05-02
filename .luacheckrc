@@ -8,7 +8,9 @@ ignore = {
     "421" -- shadowing
 }
 globals = {
+    "ActionButtonSpellAlertManager",
     "CreateFrame",
+    "C_ActionBar",
     "C_Spell",
     "GetActionInfo",
     "hooksecurefunc",
