@@ -132,8 +132,8 @@ if ActionButtonSpellAlertManager and C_ActionBar.IsAssistedCombatAction then -- 
 		if actionButton and actionButton.activeAlerts then
 			for activeAlert in pairs(actionButton.activeAlerts) do
 				local action = activeAlert.action
-				if IsAssistedCombatAction(action) then
-					-- don't hide glows from the combat assist feature
+				if not action or IsAssistedCombatAction(action) then
+					-- don't hide glows from buttons that don't have actions (PTR issue reporter) or the combat assist feature
 					return
 				end
 				local spellType, id = GetActionInfo(action)
