@@ -132,14 +132,20 @@ if ActionButtonSpellAlertManager and C_ActionBar.IsAssistedCombatAction then -- 
 		if actionButton and actionButton.activeAlerts then
 			for activeAlert in pairs(actionButton.activeAlerts) do
 				local action = activeAlert.action
-				if not action or IsAssistedCombatAction(action) then
-					-- don't hide glows from buttons that don't have actions (PTR issue reporter) or the combat assist feature
+				if not action then
+					-- don't hide glows from buttons that don't have actions (PTR issue reporter)
 					return
 				end
 				local spellType, id = GetActionInfo(action)
 				-- only check spell and macro glows
 				if id and (spellType == "spell" or spellType == "macro") and addon:ShouldHideGlow(id) then
-					if activeAlert.SpellActivationAlert then
+					if IsAssistedCombatAction(action) then
+						-- hide matched glows on the Single-Button Assistant button
+						if activeAlert.AssistedCombatRotationFrame and activeAlert.AssistedCombatRotationFrame.SpellActivationAlert then
+							activeAlert.AssistedCombatRotationFrame.SpellActivationAlert:Hide()
+						end
+					elseif activeAlert.SpellActivationAlert then
+						-- hide matched glows on regular action bars
 						activeAlert.SpellActivationAlert:Hide()
 					end
 				end
