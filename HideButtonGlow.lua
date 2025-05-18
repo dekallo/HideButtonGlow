@@ -1,7 +1,7 @@
 local addonName, HideButtonGlow = ...
 
--- globals
 local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, GetSpellName = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, C_Spell.GetSpellName
+local L = LibStub("AceLocale-3.0"):GetLocale("HideButtonGlow")
 
 local EventFrame = CreateFrame("Frame")
 EventFrame:SetScript("OnEvent", function(self, event, ...)
@@ -70,19 +70,19 @@ function HideButtonGlow:ShouldHideGlow(spellId)
 	-- check if the "hide all" option is set
 	if HideButtonGlowDB.hideAll then
 		if HideButtonGlowDB.allowed[spellId] then
-			self:AddDebugMessageWithSpell("Found in allow list, allowing spell glow for %s (ID %d).", spellId)
+			self:AddDebugMessageWithSpell(L.debug_allowed, spellId)
 			return false
 		end
-		self:AddDebugMessageWithSpell("Hide All is checked, hiding spell glow for %s (ID %d).", spellId)
+		self:AddDebugMessageWithSpell(L.debug_hide_all, spellId)
 		return true
 	end
 	-- else check filter list
 	if HideButtonGlowDB.filtered[spellId] then
-		self:AddDebugMessageWithSpell("Filter matched, hiding spell glow for %s (ID %d).", spellId)
+		self:AddDebugMessageWithSpell(L.debug_filtered, spellId)
 		return true
 	end
 	-- else show the glow
-	self:AddDebugMessageWithSpell("No filters matched, allowing spell glow for %s (ID %d).", spellId)
+	self:AddDebugMessageWithSpell(L.debug_not_filtered, spellId)
 	return false
 end
 
