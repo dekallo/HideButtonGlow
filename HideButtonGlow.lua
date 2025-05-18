@@ -42,6 +42,12 @@ function EventFrame:ADDON_LOADED(event, loadedAddon)
 	SLASH_HideButtonGlow2 = "/hidebuttonglow"
 end
 
+function HideButtonGlow:AddDebugMessageWithSpell(message, spellId)
+	if HideButtonGlowDB.debugMode then
+		DEFAULT_CHAT_FRAME:AddMessage(message:format(GetSpellName(spellId), spellId))
+	end
+end
+
 function HideButtonGlow:AddMessage(message)
 	DEFAULT_CHAT_FRAME:AddMessage(message)
 end
@@ -51,30 +57,22 @@ function HideButtonGlow:ShouldHideGlow(spellId)
 	if HideButtonGlowDB.hideAll then
 		for i = 1, #HideButtonGlowDB.allowedSpells do
 			if spellId == HideButtonGlowDB.allowedSpells[i] then
-				if HideButtonGlowDB.debugMode then
-					self:AddMessage(("Found in allow list, allowing spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
-				end
+				self:AddDebugMessageWithSpell("Found in allow list, allowing spell glow for %s (ID %d).", spellId)
 				return false
 			end
 		end
-		if HideButtonGlowDB.debugMode then
-			self:AddMessage(("Hide All is checked, hiding spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
-		end
+		self:AddDebugMessageWithSpell("Hide All is checked, hiding spell glow for %s (ID %d).", spellId)
 		return true
 	end
 	-- else iterate through filter list
 	for i = 1, #HideButtonGlowDB.spells do
 		if spellId == HideButtonGlowDB.spells[i] then
-			if HideButtonGlowDB.debugMode then
-				self:AddMessage(("Filter matched, hiding spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
-			end
+			self:AddDebugMessageWithSpell("Filter matched, hiding spell glow for %s (ID %d).", spellId)
 			return true
 		end
 	end
 	-- else show the glow
-	if HideButtonGlowDB.debugMode then
-		self:AddMessage(("No filters matched, allowing spell glow for %s (ID %d)."):format(GetSpellName(spellId), spellId))
-	end
+	self:AddDebugMessageWithSpell("No filters matched, allowing spell glow for %s (ID %d).", spellId)
 	return false
 end
 
