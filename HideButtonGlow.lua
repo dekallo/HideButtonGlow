@@ -22,11 +22,25 @@ function EventFrame:PLAYER_LOGIN(event)
 	if type(HideButtonGlowDB.debugMode) ~= "boolean" then
 		HideButtonGlowDB.debugMode = false
 	end
-	if type(HideButtonGlowDB.spells) ~= "table" then
-		HideButtonGlowDB.spells = {}
+	if type(HideButtonGlowDB.filtered) ~= "table" then
+		HideButtonGlowDB.filtered = {}
+		-- migrate old db if present
+		if type(HideButtonGlowDB.spells) == "table" then
+			for i = 1, #HideButtonGlowDB.spells do
+				HideButtonGlowDB.filtered[HideButtonGlowDB.spells[i]] = GetSpellName(HideButtonGlowDB.spells[i])
+			end
+			HideButtonGlowDB.spells = nil
+		end
 	end
-	if type(HideButtonGlowDB.allowedSpells) ~= "table" then
-		HideButtonGlowDB.allowedSpells = {}
+	if type(HideButtonGlowDB.allowed) ~= "table" then
+		HideButtonGlowDB.allowed = {}
+		-- migrate old db if present
+		if type(HideButtonGlowDB.allowedSpells) == "table" then
+			for i = 1, #HideButtonGlowDB.allowedSpells do
+				HideButtonGlowDB.allowed[HideButtonGlowDB.allowedSpells[i]] = GetSpellName(HideButtonGlowDB.allowedSpells[i])
+			end
+			HideButtonGlowDB.allowedSpells = nil
+		end
 	end
 end
 
@@ -55,21 +69,17 @@ end
 function HideButtonGlow:ShouldHideGlow(spellId)
 	-- check if the "hide all" option is set
 	if HideButtonGlowDB.hideAll then
-		for i = 1, #HideButtonGlowDB.allowedSpells do
-			if spellId == HideButtonGlowDB.allowedSpells[i] then
-				self:AddDebugMessageWithSpell("Found in allow list, allowing spell glow for %s (ID %d).", spellId)
-				return false
-			end
+		if HideButtonGlowDB.allowed[spellId] then
+			self:AddDebugMessageWithSpell("Found in allow list, allowing spell glow for %s (ID %d).", spellId)
+			return false
 		end
 		self:AddDebugMessageWithSpell("Hide All is checked, hiding spell glow for %s (ID %d).", spellId)
 		return true
 	end
-	-- else iterate through filter list
-	for i = 1, #HideButtonGlowDB.spells do
-		if spellId == HideButtonGlowDB.spells[i] then
-			self:AddDebugMessageWithSpell("Filter matched, hiding spell glow for %s (ID %d).", spellId)
-			return true
-		end
+	-- else check filter list
+	if HideButtonGlowDB.filtered[spellId] then
+		self:AddDebugMessageWithSpell("Filter matched, hiding spell glow for %s (ID %d).", spellId)
+		return true
 	end
 	-- else show the glow
 	self:AddDebugMessageWithSpell("No filters matched, allowing spell glow for %s (ID %d).", spellId)

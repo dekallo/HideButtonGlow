@@ -1,9 +1,7 @@
 local addonName, HideButtonGlow = ...
 
 -- globals
-local tinsert, tremove, tContains, tonumber = tinsert, tremove, tContains, tonumber
-
-local GetSpellName, GetSpellInfo = C_Spell.GetSpellName, C_Spell.GetSpellInfo
+local tonumber, GetSpellName, GetSpellInfo = tonumber, C_Spell.GetSpellName, C_Spell.GetSpellInfo
 
 LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
     order = 1,
@@ -72,11 +70,11 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                         if spellID ~= nil then
                             local name = GetSpellName(spellID)
                             if name then
-                                if tContains(HideButtonGlowDB.spells, spellID) then
+                                if HideButtonGlowDB.filtered[spellID] then
                                     HideButtonGlow:AddMessage(("ID %2$d already filtered as spell %1$s."):format(name, spellID))
                                 else
                                     HideButtonGlow:AddMessage(("Filtering button glow for spell %s with ID %d."):format(name, spellID))
-                                    tinsert(HideButtonGlowDB.spells, spellID)
+                                    HideButtonGlowDB.filtered[spellID] = name
                                 end
                             else
                                 HideButtonGlow:AddMessage(("Invalid spell ID: %s"):format(value))
@@ -84,11 +82,11 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                         else
                             local spellInfo = GetSpellInfo(value)
                             if spellInfo and spellInfo.spellID then
-                                if tContains(HideButtonGlowDB.spells, spellInfo.spellID) then
+                                if HideButtonGlowDB.filtered[spellInfo.spellID] then
                                     HideButtonGlow:AddMessage(("\"%3$s\" already filtered as spell %1$s with ID %2$d."):format(spellInfo.name, spellInfo.spellID, value))
                                 else
                                     HideButtonGlow:AddMessage(("Filtering button glow for \"%3$s\" as spell %1$s with ID %2$d."):format(spellInfo.name, spellInfo.spellID, value))
-                                    tinsert(HideButtonGlowDB.spells, spellInfo.spellID)
+                                    HideButtonGlowDB.filtered[spellInfo.spellID] = spellInfo.name
                                 end
                             else
                                 HideButtonGlow:AddMessage(("Invalid spell name: %s"):format(value))
@@ -106,25 +104,15 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                     name = "Delete",
                     desc = "Delete an existing filtered spell.",
                     get = false,
-                    set = function(_, index)
-                        local spellID = HideButtonGlowDB.spells[index]
-                        local name = GetSpellName(spellID)
-                        HideButtonGlow:AddMessage(("Removing button glow filter for spell %s with ID %d."):format(name, spellID))
-                        tremove(HideButtonGlowDB.spells, index)
+                    set = function(_, spellID)
+                        HideButtonGlow:AddMessage(("Removing button glow filter for spell %s with ID %d."):format(HideButtonGlowDB.filtered[spellID], spellID))
+                        HideButtonGlowDB.filtered[spellID] = nil
                     end,
                     values = function()
-                        local spellNames = {}
-                        for i = 1, #HideButtonGlowDB.spells do
-                            local name = GetSpellName(HideButtonGlowDB.spells[i])
-                            tinsert(spellNames, name)
-                        end
-                        return spellNames
-                    end,
-                    disabled = function()
-                        return #HideButtonGlowDB.spells == 0
+                        return HideButtonGlowDB.filtered
                     end,
                     hidden = function()
-                        return HideButtonGlowDB.hideAll
+                        return HideButtonGlowDB.hideAll or not next(HideButtonGlowDB.filtered)
                     end
                 },
                 allowedSpellHeader = {
@@ -155,11 +143,11 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                         if spellID ~= nil then
                             local name = GetSpellName(spellID)
                             if name then
-                                if tContains(HideButtonGlowDB.allowedSpells, spellID) then
+                                if HideButtonGlowDB.allowed[spellID] then
                                     HideButtonGlow:AddMessage(("ID %2$d already allowed as spell %1$s."):format(name, spellID))
                                 else
                                     HideButtonGlow:AddMessage(("Allowing button glow for spell %s with ID %d."):format(name, spellID))
-                                    tinsert(HideButtonGlowDB.allowedSpells, spellID)
+                                    HideButtonGlowDB.allowed[spellID] = name
                                 end
                             else
                                 HideButtonGlow:AddMessage(("Invalid spell ID: %s"):format(value))
@@ -167,11 +155,11 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                         else
                             local spellInfo = GetSpellInfo(value)
                             if spellInfo and spellInfo.spellID then
-                                if tContains(HideButtonGlowDB.allowedSpells, spellInfo.spellID) then
+                                if HideButtonGlowDB.allowed[spellInfo.spellID] then
                                     HideButtonGlow:AddMessage(("\"%3$s\" already allowed as spell %s with ID %d."):format(spellInfo.name, spellInfo.spellID, value))
                                 else
                                     HideButtonGlow:AddMessage(("Allowing button glow for \"%3$s\" as spell %1$s with ID %2$d."):format(spellInfo.name, spellInfo.spellID, value))
-                                    tinsert(HideButtonGlowDB.allowedSpells, spellInfo.spellID)
+                                    HideButtonGlowDB.allowed[spellInfo.spellID] = spellInfo.name
                                 end
                             else
                                 HideButtonGlow:AddMessage(("Invalid spell name: %s"):format(value))
@@ -189,25 +177,15 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                     name = "Delete",
                     desc = "Delete an existing allowed spell.",
                     get = false,
-                    set = function(_, index)
-                        local spellID = HideButtonGlowDB.allowedSpells[index]
-                        local name = GetSpellName(spellID)
-                        HideButtonGlow:AddMessage(("Removing allowed button glow for spell %s with ID %d."):format(name, spellID))
-                        tremove(HideButtonGlowDB.allowedSpells, index)
+                    set = function(_, spellID)
+                        HideButtonGlow:AddMessage(("Removing allowed button glow for spell %s with ID %d."):format(HideButtonGlowDB.allowed[spellID], spellID))
+                        HideButtonGlowDB.allowed[spellID] = nil
                     end,
                     values = function()
-                        local spellNames = {}
-                        for i = 1, #HideButtonGlowDB.allowedSpells do
-                            local name = GetSpellName(HideButtonGlowDB.allowedSpells[i])
-                            tinsert(spellNames, name)
-                        end
-                        return spellNames
-                    end,
-                    disabled = function()
-                        return #HideButtonGlowDB.allowedSpells == 0
+                        return HideButtonGlowDB.allowed
                     end,
                     hidden = function()
-                        return not HideButtonGlowDB.hideAll
+                        return not HideButtonGlowDB.hideAll or not next(HideButtonGlowDB.allowed)
                     end
                 }
             }
