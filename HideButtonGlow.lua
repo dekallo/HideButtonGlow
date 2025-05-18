@@ -1,18 +1,17 @@
-local addonName, addon = ...
+local addonName, HideButtonGlow = ...
 
 -- globals
-local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings
+local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, GetSpellName = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, C_Spell.GetSpellName
 
-local GetSpellName = C_Spell.GetSpellName
-
-local eventFrame = CreateFrame("Frame")
-eventFrame:SetScript("OnEvent", function(self, event, ...)
+local EventFrame = CreateFrame("Frame")
+EventFrame:SetScript("OnEvent", function(self, event, ...)
 	if self[event] then return self[event](self, event, ...) end
 end)
-eventFrame:RegisterEvent("PLAYER_LOGIN")
-eventFrame:RegisterEvent("ADDON_LOADED")
+EventFrame:RegisterEvent("PLAYER_LOGIN")
+EventFrame:RegisterEvent("ADDON_LOADED")
 
-function eventFrame:PLAYER_LOGIN(event)
+function EventFrame:PLAYER_LOGIN(event)
+	self:UnregisterEvent(event)
 	if not HideButtonGlowDB then
 		HideButtonGlowDB = {}
 		HideButtonGlowDB.hideAll = false
@@ -23,10 +22,9 @@ function eventFrame:PLAYER_LOGIN(event)
 		-- upgrade db for v3
 		HideButtonGlowDB.allowedSpells = {}
 	end
-	self:UnregisterEvent(event)
 end
 
-function eventFrame:ADDON_LOADED(event, loadedAddon)
+function EventFrame:ADDON_LOADED(event, loadedAddon)
 	if loadedAddon ~= addonName then
 		return
 	end
@@ -38,11 +36,11 @@ function eventFrame:ADDON_LOADED(event, loadedAddon)
 	SLASH_HideButtonGlow2 = "/hidebuttonglow"
 end
 
-function addon:AddMessage(message)
+function HideButtonGlow:AddMessage(message)
 	DEFAULT_CHAT_FRAME:AddMessage(message)
 end
 
-function addon:ShouldHideGlow(spellId)
+function HideButtonGlow:ShouldHideGlow(spellId)
 	-- check if the "hide all" option is set
 	if HideButtonGlowDB.hideAll then
 		for i = 1, #HideButtonGlowDB.allowedSpells do
@@ -82,7 +80,7 @@ do
 		local OriginalShowOverlayGlow = LibButtonGlow.ShowOverlayGlow
 		function LibButtonGlow.ShowOverlayGlow(self)
 			local spellId = self:GetSpellId()
-			if not spellId or not addon:ShouldHideGlow(spellId) then
+			if not spellId or not HideButtonGlow:ShouldHideGlow(spellId) then
 				return OriginalShowOverlayGlow(self)
 			end
 		end
@@ -99,7 +97,7 @@ if ElvUI then
 		local OriginalShowOverlayGlow = LibCustomGlow.ShowOverlayGlow
 		function LibCustomGlow.ShowOverlayGlow(self)
 			local spellId = self.GetSpellId and self:GetSpellId()
-			if not spellId or not addon:ShouldHideGlow(spellId) then
+			if not spellId or not HideButtonGlow:ShouldHideGlow(spellId) then
 				return OriginalShowOverlayGlow(self)
 			end
 		end
@@ -117,7 +115,7 @@ if Dominos then
 		function ActionButton.ShowOverlayGlow(self)
 			local spellType, id = GetActionInfo(self.action)
 			-- only check spell and macro glows
-			if not id or not (spellType == "spell" or spellType == "macro") or not addon:ShouldHideGlow(id) then
+			if not id or not (spellType == "spell" or spellType == "macro") or not HideButtonGlow:ShouldHideGlow(id) then
 				return OriginalShowOverlayGlow(self)
 			end
 		end
@@ -138,7 +136,7 @@ if ActionButtonSpellAlertManager and C_ActionBar.IsAssistedCombatAction then -- 
 				end
 				local spellType, id = GetActionInfo(action)
 				-- only check spell and macro glows
-				if id and (spellType == "spell" or spellType == "macro") and addon:ShouldHideGlow(id) then
+				if id and (spellType == "spell" or spellType == "macro") and HideButtonGlow:ShouldHideGlow(id) then
 					if IsAssistedCombatAction(action) then
 						-- hide matched glows on the Single-Button Assistant button
 						if activeAlert.AssistedCombatRotationFrame and activeAlert.AssistedCombatRotationFrame.SpellActivationAlert then
@@ -157,7 +155,7 @@ else -- Classic, Retail (pre 11.1.7)
 		if actionButton and actionButton.action then
 			local spellType, id = GetActionInfo(actionButton.action)
 			-- only check spell and macro glows
-			if id and (spellType == "spell" or spellType == "macro") and addon:ShouldHideGlow(id) then
+			if id and (spellType == "spell" or spellType == "macro") and HideButtonGlow:ShouldHideGlow(id) then
 				if actionButton.SpellActivationAlert then
 					-- Retail (10.0.2+)
 					actionButton.SpellActivationAlert:Hide()
