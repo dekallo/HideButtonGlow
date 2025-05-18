@@ -56,14 +56,14 @@ function EventFrame:ADDON_LOADED(event, loadedAddon)
 	SLASH_HideButtonGlow2 = "/hidebuttonglow"
 end
 
-function HideButtonGlow:AddDebugMessageWithSpell(message, spellId)
-	if HideButtonGlowDB.debugMode then
-		DEFAULT_CHAT_FRAME:AddMessage(message:format(GetSpellName(spellId), spellId))
-	end
+function HideButtonGlow:AddMessage(message)
+	DEFAULT_CHAT_FRAME:AddMessage(("|cFF00FF98HideButtonGlow|r: %s"):format(message))
 end
 
-function HideButtonGlow:AddMessage(message)
-	DEFAULT_CHAT_FRAME:AddMessage(message)
+function HideButtonGlow:AddDebugMessageWithSpell(message, spellId)
+	if HideButtonGlowDB.debugMode then
+		self:AddMessage(message:format(GetSpellName(spellId), spellId))
+	end
 end
 
 function HideButtonGlow:ShouldHideGlow(spellId)
