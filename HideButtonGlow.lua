@@ -73,7 +73,7 @@ function HideButtonGlow:ShouldHideGlow(spellId)
 			self:AddDebugMessageWithSpell(L.debug_allowed, spellId)
 			return false
 		end
-		self:AddDebugMessageWithSpell(L.debug_hide_all, spellId)
+		self:AddDebugMessageWithSpell(L.debug_filtered, spellId)
 		return true
 	end
 	-- else check filter list
@@ -82,7 +82,7 @@ function HideButtonGlow:ShouldHideGlow(spellId)
 		return true
 	end
 	-- else show the glow
-	self:AddDebugMessageWithSpell(L.debug_not_filtered, spellId)
+	self:AddDebugMessageWithSpell(L.debug_allowed, spellId)
 	return false
 end
 

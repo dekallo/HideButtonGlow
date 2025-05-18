@@ -1,10 +1,8 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("HideButtonGlow", "koKR")
 if not L then return end
 
---L.debug_allowed = "Found in allow list, allowing spell glow for %s (ID %d)."
---L.debug_hide_all = "Hide All is checked, hiding spell glow for %s (ID %d)."
---L.debug_filtered = "Filter matched, hiding spell glow for %s (ID %d)."
---L.debug_not_filtered = "No filters matched, allowing spell glow for %s (ID %d)."
+--L.debug_allowed = "Allowing glow for '%s' (ID %d)."
+--L.debug_filtered = "Filtered glow for '%s' (ID %d)."
 --L.options = "Options"
 --L.hide_all = "Hide all glows"
 --L.hide_all_desc = "Hide all spell glows, except for those under \"Allowed Spells\"."
