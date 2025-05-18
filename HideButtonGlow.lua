@@ -12,14 +12,20 @@ EventFrame:RegisterEvent("ADDON_LOADED")
 
 function EventFrame:PLAYER_LOGIN(event)
 	self:UnregisterEvent(event)
+	-- set up and validate db
 	if not HideButtonGlowDB then
 		HideButtonGlowDB = {}
+	end
+	if type(HideButtonGlowDB.hideAll) ~= "boolean" then
 		HideButtonGlowDB.hideAll = false
+	end
+	if type(HideButtonGlowDB.debugMode) ~= "boolean" then
 		HideButtonGlowDB.debugMode = false
+	end
+	if type(HideButtonGlowDB.spells) ~= "table" then
 		HideButtonGlowDB.spells = {}
-		HideButtonGlowDB.allowedSpells = {}
-	elseif not HideButtonGlowDB.allowedSpells then
-		-- upgrade db for v3
+	end
+	if type(HideButtonGlowDB.allowedSpells) ~= "table" then
 		HideButtonGlowDB.allowedSpells = {}
 	end
 end
