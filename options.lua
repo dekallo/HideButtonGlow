@@ -102,6 +102,7 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                 hiddenSpellDelete = {
                     order = 7,
                     type = "select",
+                    style = "radio",
                     width = "full",
                     name = "Delete",
                     desc = "Delete an existing filtered spell.",
@@ -185,6 +186,7 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                 allowedSpellDelete = {
                     order = 12,
                     type = "select",
+                    style = "radio",
                     width = "full",
                     name = "Delete",
                     desc = "Delete an existing allowed spell.",
