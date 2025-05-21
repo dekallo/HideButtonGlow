@@ -57,12 +57,19 @@ function EventFrame:ADDON_LOADED(event, loadedAddon)
 end
 
 function HideButtonGlow:AddMessage(message)
-	DEFAULT_CHAT_FRAME:AddMessage(("|cFF00FF98HideButtonGlow|r: %s"):format(message))
+	DEFAULT_CHAT_FRAME:AddMessage(("|cFF00FF98HideButtonGlow:|r %s"):format(message))
 end
 
-function HideButtonGlow:AddDebugMessageWithSpell(message, spellId)
-	if HideButtonGlowDB.debugMode then
-		self:AddMessage(message:format(GetSpellName(spellId), spellId))
+do
+	local lastPrintBySpell = {}
+	function HideButtonGlow:AddDebugMessageWithSpell(message, spellId)
+		if HideButtonGlowDB.debugMode then
+			local t = GetTime()
+			if t - (lastPrintBySpell[spellId] or 0) > 5 then
+				lastPrintBySpell[spellId] = t
+				self:AddMessage(message:format(GetSpellName(spellId) or "", spellId))
+			end
+		end
 	end
 end
 
