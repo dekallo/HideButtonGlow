@@ -153,14 +153,19 @@ else -- Classic, Retail (pre 11.1.7)
 	hooksecurefunc("ActionButton_ShowOverlayGlow", function(actionButton)
 		if actionButton and actionButton.action then
 			local spellType, id = GetActionInfo(actionButton.action)
+			if spellType == "macro" then
+				-- needed on MoP Classic to convert the macro id to a spell id, not needed in 10.2+ as GetActionInfo will change
+				-- to just return the spell id in the first place.
+				id = GetMacroSpell(id)
+			end
 			-- only check spell and macro glows
 			if id and (spellType == "spell" or spellType == "macro") and HideButtonGlow:ShouldHideGlow(id) then
-				if actionButton.SpellActivationAlert then
-					-- Retail (10.0.2+)
-					actionButton.SpellActivationAlert:Hide()
-				elseif actionButton.overlay then
+				if actionButton.overlay then
 					-- Cata Classic, Mists Classic, Retail (pre 10.0.2)
 					actionButton.overlay:Hide()
+				elseif actionButton.SpellActivationAlert then
+					-- Retail (10.0.2+)
+					actionButton.SpellActivationAlert:Hide()
 				end
 			end
 		end
