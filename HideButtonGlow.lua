@@ -125,24 +125,6 @@ if ElvUI then
 	end
 end
 
--- Dominos
-
-if Dominos then
-	-- since version 10.2.5-beta1, Dominos defines their own ActionButton instead of reusing the buttons
-	-- from the default Blizzard bars.
-	local ActionButton = Dominos.ActionButton
-	if ActionButton and ActionButton.ShowOverlayGlow then
-		local OriginalShowOverlayGlow = ActionButton.ShowOverlayGlow
-		function ActionButton.ShowOverlayGlow(self)
-			local spellType, id = GetActionInfo(self.action)
-			-- only check spell and macro glows
-			if not id or not (spellType == "spell" or spellType == "macro") or not HideButtonGlow:ShouldHideGlow(id) then
-				return OriginalShowOverlayGlow(self)
-			end
-		end
-	end
-end
-
 -- Blizzard Bars
 
 if ActionButtonSpellAlertManager and C_ActionBar.IsAssistedCombatAction then -- Retail (11.1.7+)

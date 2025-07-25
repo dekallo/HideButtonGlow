@@ -3,7 +3,7 @@
 ## Author: dekallo
 ## Title: Hide Button Glow
 ## Notes: Prevents spells on your action bar from glowing.
-## OptionalDeps: Ace3, LibButtonGlow-1.0, ElvUI, Dominos
+## OptionalDeps: Ace3, LibButtonGlow-1.0, ElvUI
 ## SavedVariables: HideButtonGlowDB
 ## IconTexture: Interface\AddOns\HideButtonGlow\icon
 ## X-Source: https://github.com/dekallo/HideButtonGlow
