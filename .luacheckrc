@@ -13,6 +13,7 @@ globals = {
     "C_ActionBar",
     "C_Spell",
     "GetActionInfo",
+    "GetMacroSpell",
     "GetTime",
     "hooksecurefunc",
     "tonumber",
