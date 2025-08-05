@@ -1,0 +1,28 @@
+## Interface: 110200
+## Version: @project-version@
+## Author: dekallo
+## Title: Hide Button Glow
+## Notes: Prevents spells on your action bar from glowing.
+## OptionalDeps: Ace3, LibButtonGlow-1.0, ElvUI
+## SavedVariables: HideButtonGlowDB
+## IconTexture: Interface\AddOns\HideButtonGlow\icon
+## X-Source: https://github.com/dekallo/HideButtonGlow
+## X-Website: https://www.curseforge.com/wow/addons/hide-button-glow
+## X-Curse-Project-ID: 426069
+## X-Wago-ID: RBKpVONE
+## X-WoWI-ID: 26179
+
+embeds.xml
+Locales\enUS.lua [AllowLoadTextLocale enUS]
+Locales\deDE.lua [AllowLoadTextLocale deDE]
+Locales\esES.lua [AllowLoadTextLocale esES]
+Locales\esMX.lua [AllowLoadTextLocale esMX]
+Locales\frFR.lua [AllowLoadTextLocale frFR]
+Locales\itIT.lua [AllowLoadTextLocale itIT]
+Locales\koKR.lua [AllowLoadTextLocale koKR]
+Locales\ptBR.lua [AllowLoadTextLocale ptBR]
+Locales\ruRU.lua [AllowLoadTextLocale ruRU]
+Locales\zhCN.lua [AllowLoadTextLocale zhCN]
+Locales\zhTW.lua [AllowLoadTextLocale zhTW]
+HideButtonGlow.lua
+options.lua
