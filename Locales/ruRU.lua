@@ -1,5 +1,5 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("HideButtonGlow", "ruRU")
-if not L then return end
+
 --Translator ZamestoTV
 L.debug_allowed = "Разрешено свечение для '%s' (ID %d)."
 L.debug_filtered = "Отфильтровано свечение для '%s' (ID %d)."
