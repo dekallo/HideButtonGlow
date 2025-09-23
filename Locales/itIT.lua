@@ -1,5 +1,4 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("HideButtonGlow", "itIT")
-if not L then return end
 
 --L.debug_allowed = "Allowing glow for '%s' (ID %d)."
 --L.debug_filtered = "Filtered glow for '%s' (ID %d)."
