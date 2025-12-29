@@ -1,4 +1,4 @@
-## Interface: 50501, 110205, 110207
+## Interface: 50503, 110207, 120000, 120001
 ## Version: @project-version@
 ## Author: dekallo
 ## Title: Hide Button Glow
