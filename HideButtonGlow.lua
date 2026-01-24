@@ -50,7 +50,7 @@ function EventFrame:ADDON_LOADED(event, loadedAddon)
 	end
 	self:UnregisterEvent(event)
 	SlashCmdList.HideButtonGlow = function()
-		Settings.OpenToCategory(addonName)
+		Settings.OpenToCategory(HideButtonGlow.categoryId)
 	end
 	SLASH_HideButtonGlow1 = "/hbg"
 	SLASH_HideButtonGlow2 = "/hidebuttonglow"

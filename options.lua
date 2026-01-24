@@ -192,4 +192,5 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
         }
     }
 })
-LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName, nil, nil, "general")
+local _, categoryId = LibStub("AceConfigDialog-3.0"):AddToBlizOptions(addonName, nil, nil, "general")
+HideButtonGlow.categoryId = categoryId
