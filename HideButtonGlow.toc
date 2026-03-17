@@ -12,7 +12,14 @@
 ## X-Wago-ID: RBKpVONE
 ## X-WoWI-ID: 26179
 
-embeds.xml
+#@non-debug@
+# Libs\LibStub\LibStub.lua
+# Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+# Libs\AceGUI-3.0\AceGUI-3.0.xml
+# Libs\AceConfigRegistry-3.0\AceConfigRegistry-3.0.lua
+# Libs\AceConfigDialog-3.0\AceConfigDialog-3.0.lua
+# Libs\AceLocale-3.0\AceLocale-3.0.lua
+#@end-non-debug@
 Locales\enUS.lua
 Locales\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
 HideButtonGlow.lua
