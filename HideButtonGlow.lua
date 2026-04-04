@@ -50,7 +50,11 @@ function EventFrame:ADDON_LOADED(event, loadedAddon)
 	end
 	self:UnregisterEvent(event)
 	SlashCmdList.HideButtonGlow = function()
-		Settings.OpenToCategory(HideButtonGlow.categoryId)
+		if not InCombatLockdown() then
+			Settings.OpenToCategory(HideButtonGlow.categoryId)
+		else
+			HideButtonGlow:AddMessage(L.combat_options)
+		end
 	end
 	SLASH_HideButtonGlow1 = "/hbg"
 	SLASH_HideButtonGlow2 = "/hidebuttonglow"

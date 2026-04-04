@@ -10,20 +10,21 @@ ignore = {
 }
 globals = {
     "ActionButtonSpellAlertManager",
-    "CreateFrame",
     "C_ActionBar",
     "C_Spell",
+    "CreateFrame",
+    "DEFAULT_CHAT_FRAME",
+    "ElvUI",
     "GetActionInfo",
     "GetMacroSpell",
     "GetTime",
-    "hooksecurefunc",
-    "tonumber",
-    "LibStub",
     "HideButtonGlowDB",
-    "DEFAULT_CHAT_FRAME",
+    "hooksecurefunc",
+    "InCombatLockdown",
+    "LibStub",
     "Settings",
-    "SlashCmdList",
     "SLASH_HideButtonGlow1",
     "SLASH_HideButtonGlow2",
-    "ElvUI"
+    "SlashCmdList",
+    "tonumber"
 }

@@ -32,3 +32,4 @@ L.spell_text_allowed = "Разрешено свечение кнопки для 
 L.delete_allow = "Удалить заклинание из списка разрешённых"
 L.delete_allow_desc = "Удалить существующее разрешённое заклинание."
 L.spell_allow_removed = "Удалено разрешение свечения кнопки для заклинания %1$s с ID %2$d."
+--L.combat_options = "Can't open settings in combat!"

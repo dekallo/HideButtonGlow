@@ -31,3 +31,4 @@ L.spell_text_allowed = "Allowing button glow for \"%3$s\" as spell %1$s with ID 
 L.delete_allow = "Delete Spell from Allow List"
 L.delete_allow_desc = "Delete an existing allowed spell."
 L.spell_allow_removed = "Removing allowed button glow for spell %1$s with ID %2$d."
+L.combat_options = "Can't open settings in combat!"
