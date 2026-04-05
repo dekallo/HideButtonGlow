@@ -1,6 +1,6 @@
 local addonName, HideButtonGlow = ...
 
-local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, GetSpellName = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, C_Spell.GetSpellName
+local CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, GetSpellName, InCombatLockdown = CreateFrame, GetActionInfo, DEFAULT_CHAT_FRAME, Settings, C_Spell.GetSpellName, InCombatLockdown
 local L = LibStub("AceLocale-3.0"):GetLocale("HideButtonGlow")
 
 local EventFrame = CreateFrame("Frame")
@@ -18,6 +18,9 @@ function EventFrame:PLAYER_LOGIN(event)
 	end
 	if type(HideButtonGlowDB.hideAll) ~= "boolean" then
 		HideButtonGlowDB.hideAll = false
+	end
+	if type(HideButtonGlowDB.hideOutOfCombat) ~= "boolean" then
+		HideButtonGlowDB.hideOutOfCombat = false
 	end
 	if type(HideButtonGlowDB.debugMode) ~= "boolean" then
 		HideButtonGlowDB.debugMode = false
@@ -78,6 +81,10 @@ do
 end
 
 function HideButtonGlow:ShouldHideGlow(spellId)
+	if HideButtonGlowDB.hideOutOfCombat and not InCombatLockdown() then
+		self:AddDebugMessageWithSpell(L.debug_combat:format(L.debug_filtered), spellId)
+		return true
+	end
 	-- check if the "hide all" option is set
 	if HideButtonGlowDB.hideAll then
 		if HideButtonGlowDB.allowed[spellId] then

@@ -23,4 +23,4 @@
 Locales\enUS.lua
 Locales\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
 HideButtonGlow.lua
-options.lua
+Options.lua

@@ -21,6 +21,7 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                 hideAll = {
                     order = 2,
                     type = "toggle",
+                    width = 1,
                     name = L.hide_all,
                     desc = L.hide_all_desc,
                     get = function()
@@ -30,9 +31,23 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                         HideButtonGlowDB.hideAll = not HideButtonGlowDB.hideAll
                     end
                 },
-                debugMode = {
+                hideOutOfCombat = {
                     order = 3,
                     type = "toggle",
+                    width = 2,
+                    name = L.hide_out_of_combat,
+                    desc = L.hide_out_of_combat_desc,
+                    get = function()
+                        return HideButtonGlowDB.hideOutOfCombat
+                    end,
+                    set = function()
+                        HideButtonGlowDB.hideOutOfCombat = not HideButtonGlowDB.hideOutOfCombat
+                    end
+                },
+                debugMode = {
+                    order = 4,
+                    type = "toggle",
+                    width = "full",
                     name = L.debug_mode,
                     desc = L.debug_mode_desc,
                     get = function()
@@ -43,7 +58,7 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                     end
                 },
                 hiddenSpellHeader = {
-                    order = 4,
+                    order = 5,
                     type = "header",
                     name = L.filtered_spells,
                     hidden = function()
@@ -51,7 +66,7 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                     end
                 },
                 hiddenSpellDescription = {
-                    order = 5,
+                    order = 6,
                     type = "description",
                     name = L.filtered_spells_desc,
                     hidden = function()
@@ -59,7 +74,7 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                     end
                 },
                 hiddenSpellAdd = {
-                    order = 6,
+                    order = 7,
                     type = "input",
                     width = "full",
                     name = L.add_filter,
@@ -98,7 +113,7 @@ LibStub("AceConfigRegistry-3.0"):RegisterOptionsTable(addonName, {
                     end
                 },
                 hiddenSpellDelete = {
-                    order = 7,
+                    order = 8,
                     type = "multiselect",
                     width = "full",
                     name = L.delete_filter,
